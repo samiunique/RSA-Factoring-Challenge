@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+while IFS= read -r LINE || [[ -n "$LINE" ]]
+do
+    let FLAG=1
+    let DIV=2
+    let MAX_CHECK=LINE
+    while [ $FLAG -eq 1 ]
+    do
+        REST=$(($LINE%$DIV))
+        if [[ $REST -eq 0 ]]
+        then
+            let COUNT=$(($LINE/$DIV))
+            echo "$LINE=$COUNT*$DIV"
+            let FLAG=0
+        elif [ $DIV -gt $MAX_CHECK ]
+        then
+            echo "$LINE=1*$LINE"  # If no smaller factors found, number = 1 * number
+            let FLAG=0
+        fi
+        let DIV=$(($DIV+1))
+    done
+done < $1
+
+exit 0  # Explicitly exit the script
+
